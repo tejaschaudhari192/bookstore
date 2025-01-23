@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    ---primary-bg: #F5F5F5;
+}
+
+@layer components {
+  
+
+  .profile-text {
+    @apply px-10 py-3 border border-black bg-slate-100
+  }
+
+  .price-text {
+    @apply text-3xl font-bold
+  }
+
+  .quantity-modifier-button {
+    @apply px-3 py-1 bg-gray-100 hover:bg-gray-200
+  }
+  .quantity-modifier-div {
+    @apply flex w-fit border rounded-md overflow-hidden
+  }
+  .popover-btn {
+    @apply p-2 px-4 w-fit shadow-md hover:bg-slate-300 bg-slate-100
+  }
+}
