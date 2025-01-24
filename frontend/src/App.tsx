@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
 import { Header } from './components/Header';
 import { Homepage } from './pages/Homepage';
@@ -15,47 +15,47 @@ import { AddBook } from './pages/AddBook';
 import { EditBook } from './pages/EditBook';
 import { Payment } from './pages/Payment';
 import { verifyToken } from './services/api';
-// import axios from 'axios';
-// import { Elements } from '@stripe/react-stripe-js';
-// import CheckoutForm from './components/CheckoutForm';
-// import CompletePage from './pages/CompletePage';
 import { Error } from './pages/Error';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './utils/store/appStore';
-import { addUser } from './utils/store/userSlice';
+import { addUser, setAuthentication } from './utils/store/userSlice';
+import { UserType } from './model';
 
 
 const Profile = lazy(() => import('./pages/Profile'));
 const Cart = lazy(() => import('./pages/Cart'));
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [token, setToken] = useState(Cookies.get('token'));
     const userType = useSelector((store: RootState) => store.user.type)
-    const [user, setUser] = useState(false)
+    const isAuthenticated = useSelector((store: RootState) => store.user.isAuthenticated)
+
     const dispatch = useDispatch();
 
     if (Cookies.get('user')) {
-        dispatch(addUser(JSON.parse(Cookies.get('user'))));
+        const user: string = Cookies.get('user')!
+        dispatch(addUser(JSON.parse(user)));
     }
 
     // const navigate = useNavigate();
 
     const saveToken = (userToken: string) => {
         Cookies.set('token', userToken)
-        setIsAuthenticated(true);
+        dispatch(setAuthentication(true))
+        // setIsAuthenticated(true);
         setToken(userToken);
     };
 
-    const saveUser = (user) => {
+    const saveUser = (user: UserType) => {
         const stringeduser = JSON.stringify(user)
         Cookies.set('user', stringeduser)
-        console.log(JSON.parse(Cookies.get('user')));
     }
 
     const logout = () => {
         Cookies.remove('token')
-        setIsAuthenticated(false);
+        dispatch(setAuthentication(true))
+        // setIsAuthenticated(false);
         setToken(null);
     }
 
@@ -64,7 +64,8 @@ function App() {
             if (token) {
                 const success = await verifyToken(token);
                 if (await success) {
-                    setIsAuthenticated(true);
+                    dispatch(setAuthentication(true))
+                    // setIsAuthenticated(true);
                     // setUser(jwtDecode(token));
                     // navigate('/')
                 } else {
@@ -80,13 +81,13 @@ function App() {
     return (
         <div className='h-screen w-screen overflow-x-hidden bg-[#F5F5F5]'>
             <Router>
-                <Header setIsAuthenticated={setIsAuthenticated}/>
+                <Header />
                 <Routes>
 
-                    <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Login setToken={saveToken} setUser={saveUser} setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} />} />
+                    <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Login setToken={saveToken} setUser={saveUser} />} />
                     <Route path={'/'} element={<Homepage />} />
 
-                    {!isAuthenticated && <Route path='/login' element={<Login setToken={saveToken} setUser={saveUser} setIsAuthenticated={setIsAuthenticated} isAuthenticated={isAuthenticated} />} />}
+                    {!isAuthenticated && <Route path='/login' element={<Login setToken={saveToken} setUser={saveUser} />} />}
 
                     {!isAuthenticated &&
                         <Route path='/register' element={<Register />} />

@@ -6,7 +6,8 @@ const userSlice = createSlice({
     initialState: {
         name: '',
         type: '',
-        userId: 0
+        userId: 0,
+        isAuthenticated: false,
     },
     reducers: {
         addUser: (state, action: PayloadAction<UserType>) => {
@@ -21,9 +22,12 @@ const userSlice = createSlice({
             state.userId = 0;
             Cookies.remove('user')
             Cookies.remove('token')
+        },
+        setAuthentication: (state, action: PayloadAction<boolean>)=>{
+            state.isAuthenticated = action.payload;
         }
     }
 })
 
 export default userSlice.reducer;
-export const { addUser,removeUser } = userSlice.actions;
+export const { addUser,removeUser,setAuthentication } = userSlice.actions;

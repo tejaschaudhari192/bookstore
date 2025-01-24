@@ -31,7 +31,7 @@ app.post("/create-payment-intent", async (req, res) => {
     const cartPrice = req.body.cartPrice;
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: cartPrice? cartPrice*100 : 99,
+      amount: cartPrice*100,
       currency: "usd",
       automatic_payment_methods: {
         enabled: true,

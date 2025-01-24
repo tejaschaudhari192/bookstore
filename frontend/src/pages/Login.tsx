@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/api";
-import { useDispatch } from "react-redux";
-import { addUser } from "../utils/store/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, setAuthentication } from "../utils/store/userSlice";
+import { RootState } from "../utils/store/appStore";
+import { UserType } from "../model";
 
-export const Login = ({ setToken, setUser, setIsAuthenticated, isAuthenticated }) => {
+export const Login = ({ setToken, setUser }:{setToken:SetStateAction<string>,setUser:SetStateAction<UserType>}) => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
+    const isAuthenticated = useSelector((store: RootState) => store.user.isAuthenticated)
     const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
@@ -26,7 +29,9 @@ export const Login = ({ setToken, setUser, setIsAuthenticated, isAuthenticated }
 
             // console.log(await res.data.token);
 
-            setIsAuthenticated(true)
+            // setIsAuthenticated(true)
+            dispatch(setAuthentication(true))
+
             alert("Login Successful");
             // console.log('bhoju');
 

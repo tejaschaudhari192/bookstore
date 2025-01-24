@@ -1,6 +1,6 @@
 import { MdDeleteOutline } from "react-icons/md";
 import { useGetData } from "../utils/useGetData";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeItem, setCartPrice, updateCartItem } from "../utils/store/cartSlice";
 import { CartItemType } from "../model";
 import { Loader } from "../pages/Loader";
@@ -14,14 +14,10 @@ export const CartItem = ({ cartItem }: {
     if (!book) {
         return <div className="text-gray-500 font-italic"><Loader /></div>;
     }
-
-    book.discount = parseFloat(book.discount);
-    book.price = parseInt(book.price)
-
-    const discountedPrice = book.price - book.price * book.discount;
-    console.log(discountedPrice);
     
-
+    const discountedPrice = book.price - book.price * book.discount;
+    // console.log(discountedPrice);
+    
     const handleDeleteCartItem = (id: number) => {
         dispatch(removeItem(id));
         console.log("Item Deleted");
@@ -44,7 +40,7 @@ export const CartItem = ({ cartItem }: {
     }
 
     return (
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4 border rounded-lg p-4 shadow-sm">
+        <div className="flex flex-col justify-center items-center gap-4 border rounded-lg p-4 shadow-sm">
             <div className="min-w-32 max-w-36">
                 <img
                     src={book.imgurl? book.imgurl : "https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg"}

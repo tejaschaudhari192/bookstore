@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../services/api";
 
 export const Register = () => {
 	const navigate = useNavigate();
@@ -17,8 +16,8 @@ export const Register = () => {
 		try {
 			console.log(formData);
 			
-			const { data } = await register(formData);
-			const id = await data._id;
+			// const { data } = await register(formData);
+			// const id = await data._id;
 			// setToken(await data.token);
 
 			alert("Registration Successful");

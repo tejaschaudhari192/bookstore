@@ -1,11 +1,8 @@
 import { BookCard } from "../components/BookCard";
 import { useEffect, useState } from "react";
 import { Book } from "../model";
-import { API, getData } from "../services/api";
+import { getData } from "../services/api";
 import LandingSection from "../components/LandingSection";
-import Cookies from 'js-cookie';
-import { Loader } from "./Loader";
-import { StateLoader } from "../components/StateLoader";
 import { getUserName } from "../utils/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "../utils/store/appStore";

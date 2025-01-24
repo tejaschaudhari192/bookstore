@@ -7,11 +7,12 @@ import { CartItemType } from '../model'
 import { RootState } from '../utils/store/appStore'
 import { RiBookShelfLine } from 'react-icons/ri'
 import { useState } from 'react'
-import { removeUser } from '../utils/store/userSlice'
+import { removeUser, setAuthentication } from '../utils/store/userSlice'
 import { MdLogout } from 'react-icons/md'
+import { LuChevronsUpDown } from 'react-icons/lu'
 
 
-export const Header = ({setIsAuthenticated}) => {
+export const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cartItems = useSelector((store: RootState) => store.cart.items)
@@ -19,8 +20,8 @@ export const Header = ({setIsAuthenticated}) => {
     console.log(totalQuantity);
     const userType = useSelector((store: RootState) => store.user.type)
     console.log(userType);
-    
-    const [popOver,setPopOver] = useState(false);
+
+    const [popOver, setPopOver] = useState(false);
 
     let headerBg = ''
 
@@ -30,7 +31,7 @@ export const Header = ({setIsAuthenticated}) => {
 
     return (
         <div className={`w-full p-4 fixed h-fit ${!userType ? '' : "bg-white"} flex justify-between text-xl`}
-        onMouseLeave={() => setPopOver(!popOver)}
+            onMouseLeave={() => setPopOver(!popOver)}
         >
             <div className='flex gap-2 ml-4 cursor-pointer' onClick={() => navigate('/')}>
                 <img className='w-8 h-8 scale-[2]'
@@ -41,26 +42,27 @@ export const Header = ({setIsAuthenticated}) => {
             <div className='flex gap-5'>
                 {userType &&
                     (<div className='m-auto transition-all duration-200'>
-                        <div className='flex gap-1 items-center'
-                                onMouseOver={() => setPopOver(!popOver)}
-                                >
-                            <CgProfile size={30}
-                                className='cursor-pointer'
-                            />
-                            <span className='text-sm'>Profile</span>
+                        <div className='flex gap-1 items-center cursor-pointer'
+                            onMouseOver={() => setPopOver(!popOver)}
+                        >
+                            <span className='text-sm'>{userType}</span>
+                            <LuChevronsUpDown className='mt-1' />
                         </div>
                         {popOver &&
-                        <div className='absolute'>
-                            <div className='flex items-center flex-col gap-2 text-[16px]'>
-                                <div className='popover-btn' onClick={()=>navigate('/profile')}>
-                                    Profile
-                                </div>
-                                <div className='popover-btn flex gap-2 items-center' onClick={()=>{navigate('/');setIsAuthenticated(false);dispatch(removeUser())}}>
-                                    Logout 
-                                    <MdLogout size={15} className='mt-1'/>
+                            <div className='absolute mt-2 mr-4'>
+                                <div className='flex items-center flex-col gap-2 text-[16px]'>
+                                    <div className='popover-btn flex gap-2 items-center' onClick={() => navigate('/profile')}>
+                                        Profile
+                                        <CgProfile size={20}
+                                            className='cursor-pointer'
+                                        />
+                                    </div>
+                                    <div className='popover-btn flex gap-2 items-center' onClick={() => { navigate('/'); dispatch(setAuthentication(false)); dispatch(removeUser()) }}>
+                                        Logout
+                                        <MdLogout size={15} className='mt-1' />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                     </div>)
 

@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addBook } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoadingState } from '../utils/store/loadSlice';
 import { StateLoader } from '../components/StateLoader';
+import { RootState } from '../utils/store/appStore';
 
 export const AddBook = () => {
-    const userId = JSON.parse(Cookies.get('user')).id;
-    const username = JSON.parse(Cookies.get('user')).name;
+    const userId = useSelector((store: RootState) => store.user.userId);
+    const username = useSelector((store: RootState) => store.user.name);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loadingState = useSelector(store => store.load.loadingState)
-    const [imagePreview, setImagePreview] = useState(null);
+    const loadingState = useSelector((store: RootState) => store.load.loadingState)
+    const [imagePreview, setImagePreview] = useState<string>();
     const [image, setImage] = useState(null);
     const [formData, setFormData] = useState({
         title: "",
@@ -27,11 +27,11 @@ export const AddBook = () => {
         imgurl: null
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const file = e.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
             setFormData((prevFormData) => ({ ...prevFormData, imgurl: file }));

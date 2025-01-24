@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     PaymentElement,
     useStripe,
@@ -15,6 +15,8 @@ export default function CheckoutForm() {
     const [message, setMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1);
+    const discount = useSelector((store: RootState) => store.cart.bulkDiscount);
+    // console.log(object);
 
     const cartPrice = useSelector((store: RootState) => store.cart.totalPrice);
 
@@ -68,13 +70,26 @@ export default function CheckoutForm() {
                     <span>Subtotal:</span>
                     <span>${cartPrice.toFixed(2)}</span>
                 </div>
+                {discount > 0 && (
+                    <div>
+
+                        <div className="flex justify-between mb-2">
+                            <span>Bulk Discount:</span>
+                            <span>{discount.toFixed(2)}%</span>
+                        </div>
+                        <div className="flex justify-between mb-2">
+                            <span>Discounted Price:</span>
+                            <span>${(cartPrice * discount / 100).toFixed(2)}</span>
+                        </div>
+                    </div>
+                )}
                 <div className="flex justify-between items-center mb-2">
                     <span>Shipping:</span>
                     <span>$5.00</span>
                 </div>
                 <div className="flex justify-between items-center font-bold">
                     <span>Total:</span>
-                    <span>${(cartPrice + 5).toFixed(2)}</span>
+                    <span>${(cartPrice + 5 - (cartPrice * discount / 100)).toFixed(2)}</span>
                 </div>
                 {address && (
                     <div className="mt-6">
@@ -91,11 +106,10 @@ export default function CheckoutForm() {
                 )}
             </div>
 
-            <div className="col-span-2 relative min-h-fit"> 
+            <div className="col-span-2 relative min-h-fit">
                 <div
-                    className={` inset-0 transition-all duration-700 ease-in-out transform ${
-                        step === 1 ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-                    }`}
+                    className={` inset-0 transition-all duration-700 ease-in-out transform ${step === 1 ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+                        }`}
                 >
                     <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
                     <form>
@@ -114,9 +128,8 @@ export default function CheckoutForm() {
                 </div>
 
                 <div
-                    className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${
-                        step === 2 ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-                    }`}
+                    className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${step === 2 ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+                        }`}
                 >
                     <h3 className="text-lg font-semibold mb-2">Payment Details</h3>
                     <form id="payment-form" onSubmit={handleSubmit}>

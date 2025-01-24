@@ -7,6 +7,7 @@ const cartSlice = createSlice({
     initialState: {
         items: [] as CartItemType[],
         totalPrice: 0,
+        bulkDiscount: 0
     },
     reducers: {
         addItem: (state, action: PayloadAction<CartItemType>) => {
@@ -19,19 +20,18 @@ const cartSlice = createSlice({
                 state.items.push({ bookId, quantity });
             }
         },
-        removeItem: (state, action:PayloadAction<number>) => {
+        removeItem: (state, action: PayloadAction<number>) => {
             const bookId = action.payload;
             console.log(bookId);
-            
+
             const existingItem = state.items.find(item => item.bookId === bookId);
             console.log(existingItem);
-            
+
             if (existingItem) {
                 state.items = state.items.filter(item => item.bookId !== bookId);
-                console.log(state.items);
             }
         },
-        updateCartItem: (state, action:PayloadAction<CartItemType>) => {
+        updateCartItem: (state, action: PayloadAction<CartItemType>) => {
             const { bookId, quantity } = action.payload;
             const existingItem = state.items.find(item => item.bookId === bookId);
             if (existingItem) {
@@ -43,13 +43,15 @@ const cartSlice = createSlice({
             state.totalPrice = 0;
 
         },
-        setCartPrice: (state,action:PayloadAction<number>) => {
+        setCartPrice: (state, action: PayloadAction<number>) => {
             state.totalPrice += action.payload;
         },
-
+        setBultDiscount: (state, action: PayloadAction<number>) => {
+            state.bulkDiscount = action.payload
+        }
     }
 });
 
 export default cartSlice.reducer;
 
-export const { addItem, removeItem, clearCart, updateCartItem, setCartPrice } = cartSlice.actions;
+export const { addItem, removeItem, clearCart, updateCartItem, setCartPrice, setBultDiscount } = cartSlice.actions;

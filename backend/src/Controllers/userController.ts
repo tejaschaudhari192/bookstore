@@ -40,7 +40,7 @@ export async function addOrder(req: Request, res: Response): Promise<any> {
         console.log(req.body);
         const { totalPrice, address, payment_intent_id } = req.body;
 
-        const order = await connectionPool.query("INSERT TNTO orders (user_id,total_amount,payment_intent_id,shipping_address) VALUES ($1, $2, $3, $4) RETURNING *", [userId, totalPrice, payment_intent_id, address]);
+        const order = await connectionPool.query("INSERT TNTO orders (user_id, total_amount,payment_intent_id,shipping_address) VALUES ($1, $2, $3, $4) RETURNING *", [userId, totalPrice, payment_intent_id, address]);
         res.status(200).json(order.rows[0]);
     } catch (error) {
         console.log(error);

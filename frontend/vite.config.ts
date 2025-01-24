@@ -1,9 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-
-import { createSNICallback } from 'anchor-pki/auto-cert/sni-callback'
-import { TermsOfServiceAcceptor } from 'anchor-pki/auto-cert/terms-of-service-acceptor'
-
 import fs from 'fs';
 import path from 'path';
 

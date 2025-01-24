@@ -1,17 +1,22 @@
 import axios from 'axios'
-import { formDataType } from '../model';
+import { formDataType, orderDataType } from '../model';
 import Cookies from 'js-cookie';
 
 export const API = axios.create({
     baseURL: 'http://localhost:3030', headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
 })
 
-export const register = (userData) => API.post("/auth/register", userData);
-export const login = (userData) =>
+export const register = (userData:{
+    name: string;
+    email: string;
+    password: string;
+    type: string;
+}) => API.post("/auth/register", userData);
+export const login = (userData:{ email: string, password: string }) =>
     API.post("/auth/login", userData)
 
 export const getBooks = async () => {
-    const id = JSON.parse(Cookies.get('user')).id;
+    const id = JSON.parse(Cookies.get('user')!).id;
     try {
         const result = await API.get("/admin", { params: { id } })
 
@@ -21,7 +26,7 @@ export const getBooks = async () => {
     }
 }
 
-export const getBook = async (id) => {
+export const getBook = async (id:unknown) => {
     try {
         const result = await API.get(`/admin/${id}`)
 
@@ -31,9 +36,8 @@ export const getBook = async (id) => {
     }
 }
 
-export const addBook = async (formData: formDataType, token: string) => {
-    const id = JSON.parse(Cookies.get('user')).id;
-
+export const addBook = async (formData: formDataType) => {
+    const id = JSON.parse(Cookies.get('user')!).id;
     try {
         const result = await API.post("/admin", formData, {
             params: { id }
@@ -43,7 +47,8 @@ export const addBook = async (formData: formDataType, token: string) => {
         return error
     }
 }
-export const deleteBook = async (token: string) => {
+export const deleteBook = async () => {
+    const id = JSON.parse(Cookies.get('user')!).id;
     try {
         const result = await API.delete("/admin", {
             params: { id }
@@ -53,7 +58,7 @@ export const deleteBook = async (token: string) => {
         return error
     }
 }
-export const updateBook = async (formData: formDataType, token: string) => {
+export const updateBook = async (formData:formDataType) => {
     try {
         const result = await API.put("/admin", formData, {
             params: {
@@ -68,7 +73,7 @@ export const updateBook = async (formData: formDataType, token: string) => {
 
 export const getUserData = async () => {
     try {
-        const id = await JSON.parse(Cookies.get("user")).id;
+        const id = await JSON.parse(Cookies.get("user")!).id;
         const result = await API.get("/user/profile", {
             params: { id }
         })
@@ -80,12 +85,13 @@ export const getUserData = async () => {
     }
 }
 
-export const getOrders =  async (orderData) => {
+export const getOrders =  async (orderData:orderDataType) => {
     try {
-        const id = await JSON.parse(Cookies.get("user")).id;
+        const id = await JSON.parse(Cookies.get("user")!).id;
         const result = await API.post("/user/profile",orderData, {
             params: { id }
         })
+        return result.data;
     } catch (error) {
         console.log(error);
         
@@ -95,7 +101,7 @@ export const getOrders =  async (orderData) => {
 
 export const updateUserData = async (name:string) => {
     try {
-        const id = await JSON.parse(Cookies.get("user")).id;
+        const id = await JSON.parse(Cookies.get("user")!).id;
         const result = await API.put("/user/profile", {name}, {
             params: { id }
         })

@@ -25,7 +25,7 @@ export const BookCard = ({ book }: { book: Book }) => {
 
         const getBooksCall = async () => {
             const books = await getBooks();
-            const data = await books.data;
+            const data:Book[] = await books.data;
 
             dispatch(setBooks(await data));
             // setBooks(data);

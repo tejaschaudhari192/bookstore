@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     useStripe,
 } from "@stripe/react-stripe-js";
@@ -38,15 +38,14 @@ const STATUS_CONTENT_MAP = {
         icon: ErrorIcon,
     },
     default: {
-        text: "Something went wrong, please try again.",
-        iconColor: "#DF1B41",
-        icon: ErrorIcon,
+        text: "Your payment is processing.",
+        iconColor: "#6D6E78",
+        icon: InfoIcon,
     }
 };
 
 export default function CompletePage() {
     const stripe = useStripe();
-    console.log('Complete')
 
     const [status, setStatus] = useState("default");
     const [intentId, setIntentId] = useState(null);
@@ -71,6 +70,7 @@ export default function CompletePage() {
 
             setStatus(paymentIntent.status);
             setIntentId(paymentIntent.id);
+            
         });
     }, [stripe]);
 

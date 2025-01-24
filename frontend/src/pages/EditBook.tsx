@@ -92,7 +92,7 @@ export const EditBook = () => {
 
             const updatedFormData = { ...formData, imgurl: cdnImage } as formDataType;
             console.log("updatedimage :", updatedFormData.imgurl);
-            const result = await updateBook(updatedFormData,token);
+           await updateBook(updatedFormData);
 
             navigate('/admin');
         } catch (err: any) { // Type the error
@@ -119,7 +119,7 @@ export const EditBook = () => {
 
     return (
         <div className="container mx-auto p-6 max-w-4xl bg-white mt-20 rounded-lg">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-6">Add New Book</h2>
+            <h2 className="text-3xl font-semibold text-gray-800 mb-6">Edit Book</h2>
             <StateLoader isLoading={loadingState} />
 
             <form onSubmit={handleSubmit} className="space-y-6">

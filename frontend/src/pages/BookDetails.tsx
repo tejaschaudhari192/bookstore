@@ -86,12 +86,10 @@ export const BookDetails = () => {
             <div className="md:w-1/2">
                 <div className="text-2xl font-bold">{book.title}</div>
                 <div className="text-lg text-slate-700">By : <span className="text-red-700">{book.author}</span> (Author)</div>
-                <div >
-                    <Ratings ratings={book.ratings} />
-                </div>
 
                 <div className="my-10 mr-10 md:mr-5">
-                    <p className="">
+                    <p className="font-bold">Description: </p>
+                    <p className="ml-2 mt-2">
                         Franny Stone has always been the kind of woman who is able to love but unable to stay. Leaving behind everything but her research gear, she arrives in Greenland with a singular purpose: to follow the last Arctic terns in the world on what might be their final migration to Antarctica. Franny talks her way onto a fishing boat, and she and the crew set sail, traveling ever further from shore and safety. But as Franny’s history begins to unspool—a passionate love affair, an absent family, a devastating crime—it becomes clear that she is chasing more than just the birds. When Franny's dark secrets catch up with her, how much is she willing to risk for one more chance at redemption?
                         Epic and intimate, heartbreaking and galvanizing, Charlotte McConaghy's Migrations is an ode to a disappearing world and a breathtaking page-turner about the possibility of hope against all odds.
                     </p>
@@ -127,8 +125,8 @@ export const BookDetails = () => {
                 </div>
 
                 <div className="flex items-end text-red-800 gap-3 m-5 ml-10">
-                    <div className="text-3xl font-bold">${discountedPrice}</div>
-                    <div className="text-xl line-through">${book.price}</div>
+                    <div className="text-3xl font-bold">${discountedPrice *bookQuantity}</div>
+                    <div className="text-xl line-through">${book.price * bookQuantity}</div>
                 </div>
 
                 <div className="ml-10">

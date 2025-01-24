@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
-import { getOrders, getUserData, updateUserData } from "../services/api"; // Add update API
+import { getOrders, getUserData, updateUserData } from "../services/api"; 
 import { Loader } from "./Loader";
-import { FiEdit, FiSave } from "react-icons/fi"; // Icons for edit and save
+import { FiEdit, FiSave } from "react-icons/fi"; 
 
 const Profile = () => {
     const [profileData, setProfileData] = useState();
-    const [isEditingName, setIsEditingName] = useState(false); // Track editing state
-    const [updatedName, setUpdatedName] = useState(""); // Temporary name state
+    const [isEditingName, setIsEditingName] = useState(false); 
+    const [updatedName, setUpdatedName] = useState(""); 
 
     useEffect(() => {
-        async function getOrderRows(){
-            try {
-                const result = await getOrders({});
-                setProfileData(result);
-                setUpdatedName(result.name); // Initialize updatedName
-            } catch (error) {
-                alert(error);
-            }
-        }
+        // async function getOrderRows(){
+        //     try {
+        //         const result = await getOrders({});
+        //         setProfileData(result);
+        //         setUpdatedName(result.name); 
+        //     } catch (error) {
+        //         alert(error);
+        //     }
+        // }
         async function getProfileData() {
             try {
                 const result = await getUserData();
                 setProfileData(result);
-                setUpdatedName(result.name); // Initialize updatedName
+                setUpdatedName(result.name); 
             } catch (error) {
                 alert(error);
             }
