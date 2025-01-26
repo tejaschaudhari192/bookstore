@@ -3,13 +3,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const dbConfig: PoolConfig = {
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
+    user: process.env.REMOTE_DB_USER,
+    host: process.env.REMOTE_DB_HOST,
     port: 5432,
-    database: process.env.DB_NAME,
-    password: `${process.env.DB_PASSWORD}`,
+    database: process.env.REMOTE_DB_NAME,
+    password: process.env.REMOTE_DB_PASSWORD,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 }
-// console.log(process.env.DB_PASSWORD);
 
 export const connectionPool = new Pool(dbConfig);
 
