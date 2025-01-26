@@ -7,7 +7,8 @@ const cartSlice = createSlice({
     initialState: {
         items: [] as CartItemType[],
         totalPrice: 0,
-        bulkDiscount: 0
+        bulkDiscount: 0,
+        INRFactor:86.21
     },
     reducers: {
         addItem: (state, action: PayloadAction<CartItemType>) => {

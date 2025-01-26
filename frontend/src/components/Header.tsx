@@ -28,12 +28,6 @@ export const Header = () => {
 
     const [popOver, setPopOver] = useState(false);
 
-    let headerBg = ''
-
-    if (userType != null) {
-        headerBg = "bg-[#fff]"
-    }
-
     return (
         <div className={`w-full  p-2 fixed h-fit ${userType && "bg-white"} flex justify-between text-xl`}        >
             <div className='flex gap-2 ml-4 mt-2 cursor-pointer' onClick={() => navigate('/')}>
@@ -51,7 +45,7 @@ export const Header = () => {
                             <span className={`text-sm`}>{userType}</span>
                             <LuChevronsUpDown className='mt-1' />
                         </div>
-                        <div className={`absolute transition-all duration-150 mt-2 mr-4 z-10 ${!popOver ? 'opacity-0' : 'opacity-100'}`}>
+                        <div className={`absolute transition-all duration-150 mt-2 mr-4 z-10 ${!popOver ? 'opacity-0 -translate-y-5' : 'translate-y-0'}`}>
                             <div
                                 onClick={() => setPopOver(!popOver)}
                                 className='flex bg-white shadow-md flex-col text-[16px]'>

@@ -3,16 +3,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const dbConfig: PoolConfig = {
-    user: process.env.REMOTE_DB_USER,
-    host: process.env.REMOTE_DB_HOST,
+    user: process.env.LOCAL_DB_USER,
+    host: process.env.LOCAL_DB_HOST,
     port: 5432,
-    database: process.env.REMOTE_DB_NAME,
-    password: process.env.REMOTE_DB_PASSWORD,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-    ssl: {
-        rejectUnauthorized: false,
-    }
+    database: process.env.LOCAL_DB_NAME,
+    password: process.env.LOCAL_DB_PASSWORD,
+    // idleTimeoutMillis: 30000,
+    // connectionTimeoutMillis: 2000,
+    // ssl: {
+    //     rejectUnauthorized: false,
+    // }
 }
 
 export const connectionPool = new Pool(dbConfig);

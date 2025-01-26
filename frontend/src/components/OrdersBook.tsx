@@ -3,7 +3,7 @@ import { getBook } from "../services/api";
 import { Book } from "../model";
 import { Loader } from "../pages/Loader";
 
-export const OrdersBook = ({ id }) => {
+export const OrdersBook = ({ id }:{id:number}) => {
     const [book, setBook] = useState<Book>();
 
     useEffect(() => {

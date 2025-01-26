@@ -45,7 +45,7 @@ export const Orders = () => {
                                 </div>
                                 <div className="mb-2 md:mb-0">
                                     <p className="text-sm text-gray-500">TOTAL AMOUNT</p>
-                                    <p className="text-base font-medium">₹{order.total_amount}</p>
+                                    <p className="text-base font-medium">₹ {order.total_amount}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">ORDER DATE</p>

@@ -6,7 +6,7 @@ import { BookDetails } from './pages/BookDetails';
 // import Cart from './pages/Cart';
 // import { Profile } from './pages/Profile';
 import { Loader } from './pages/Loader';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Admin } from './pages/Admin';
@@ -19,7 +19,6 @@ import { Error } from './pages/Error';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './utils/store/appStore';
 import { addUser, setAuthentication } from './utils/store/userSlice';
-import { UserType } from './model';
 import { Orders } from './pages/Orders';
 
 

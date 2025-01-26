@@ -29,7 +29,7 @@ export interface formDataType {
     id?: number;
     title: string;
     author: string;
-    price: string;
+    price: number;
     pages: string;
     language: string;
     publisher?: string;

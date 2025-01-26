@@ -8,7 +8,6 @@ import { setBooks } from "../utils/store/adminSlice";
 import { RootState } from "../utils/store/appStore";
 import { Loader } from "./Loader";
 import { Book } from "../model";
-import { StateLoader } from "../components/StateLoader";
 
 export const Admin = () => {
     const books = useSelector((state: RootState) => state.admin.books);

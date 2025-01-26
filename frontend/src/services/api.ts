@@ -42,6 +42,7 @@ export const addBook = async (formData: formDataType) => {
         const result = await API.post("/admin", formData, {
             params: { id }
         })
+        //@ts-ignore
         return result.addedBook;
     } catch (error) {
         return error

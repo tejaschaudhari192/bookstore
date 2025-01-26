@@ -9,16 +9,16 @@ const pg_1 = require("pg");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const dbConfig = {
-    user: process.env.REMOTE_DB_USER,
-    host: process.env.REMOTE_DB_HOST,
+    user: process.env.LOCAL_DB_USER,
+    host: process.env.LOCAL_DB_HOST,
     port: 5432,
-    database: process.env.REMOTE_DB_NAME,
-    password: process.env.REMOTE_DB_PASSWORD,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-    ssl: {
-        rejectUnauthorized: false,
-    }
+    database: process.env.LOCAL_DB_NAME,
+    password: process.env.LOCAL_DB_PASSWORD,
+    // idleTimeoutMillis: 30000,
+    // connectionTimeoutMillis: 2000,
+    // ssl: {
+    //     rejectUnauthorized: false,
+    // }
 };
 exports.connectionPool = new pg_1.Pool(dbConfig);
 function connectToDB() {

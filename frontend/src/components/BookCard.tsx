@@ -18,7 +18,7 @@ export const BookCard = ({ book }: { book: Book }) => {
 
     const handleDeleteBook = () => {
         dispatch(setLoadingState(true))
-        API.delete("/admin", { params: { id: book.id } }).then((res) => {
+        API.delete("/admin", { params: { id: book.id } }).then(() => {
             dispatch(setLoadingState(false))
         }).catch((err) => {
             alert(err)

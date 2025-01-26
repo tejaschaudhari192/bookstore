@@ -13,8 +13,8 @@ export const BookDetails = () => {
     const { id } = useParams();
     const [book, setBook] = useState<Book>();
     const dispatch = useDispatch();
-    // console.log(id);
     const loadingState = useSelector((store: RootState) => store.load.loadingState)
+    const INRFactor = useSelector((store: RootState) => store.cart.INRFactor);
 
     const cartItems = useSelector((store: RootState) => store.cart.items);
 
@@ -26,10 +26,7 @@ export const BookDetails = () => {
             console.log(data);
             const bookDetails = data[0]
             setBook(bookDetails);
-            // console.log(book);
             dispatch(setLoadingState(true))
-
-
         }
         getBookDetails()
     }, [])
@@ -124,8 +121,12 @@ export const BookDetails = () => {
                 </div>
 
                 <div className="flex items-end text-red-800 gap-3 m-5 ml-10">
-                    <div className="text-3xl font-bold">${discountedPrice *bookQuantity}</div>
+                    <div className="text-3xl font-bold">${discountedPrice * bookQuantity}</div>
                     <div className="text-xl line-through">${book.price * bookQuantity}</div>
+                </div>
+
+                <div className="flex items-end text-red-800 gap-3 m-5 ml-10">
+                    <div className="text-2xl font-bold">₹ {(discountedPrice * bookQuantity) * INRFactor}</div>
                 </div>
 
                 <div className="ml-10">

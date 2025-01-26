@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 
 // const SNICallback = createSNICallback({
 //     name: 'sni-callback',
@@ -18,12 +18,12 @@ export default defineConfig({
     //         SNICallback
     //     }
     // },
-    server: {
-        https: {
-            key: fs.readFileSync(path.resolve(__dirname, 'certs/bookstore-privateKey.key')),
-            cert: fs.readFileSync(path.resolve(__dirname, 'certs/bookstore.crt')),
-        },
-    },
+    // server: {
+    //     https: {
+    //         key: fs.readFileSync(path.resolve(__dirname, 'certs/bookstore-privateKey.key')),
+    //         cert: fs.readFileSync(path.resolve(__dirname, 'certs/bookstore.crt')),
+    //     },
+    // },
     plugins: [react()],
 })
 

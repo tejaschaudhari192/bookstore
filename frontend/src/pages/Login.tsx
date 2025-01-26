@@ -12,7 +12,7 @@ export const Login = () => {
     const isAuthenticated = useSelector((store: RootState) => store.user.isAuthenticated)
     const dispatch = useDispatch();
 
-    const handleSubmit = async (e:React.ChangeEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const res = await login(formData);
@@ -27,9 +27,11 @@ export const Login = () => {
 
             return await navigate('/')
 
-        } catch (error:unknown) {
+        } catch (error: unknown) {
+            // console.log(error);
+            
             if ((error as { status: number }).status == 400) {
-                return alert(error.message)
+                return alert((error as { message: string }).message)
             }
             else if ((error as { status: number }).status == 401) {
                 return alert("Wrong Password")

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { setLoadingState } from "../utils/store/loadSlice";
 import { CartItemType } from "../model";
 import { useState, useEffect } from "react";
+import React from "react";
 
 
 const offerNote = (
@@ -18,10 +19,12 @@ const offerNote = (
 
 
 const Cart = () => {
-    const cartItems = useSelector((store: RootState) => store.cart.items);
-    const cartPrice = useSelector((store: RootState) => store.cart.totalPrice);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
+    const INRFactor = useSelector((store: RootState) => store.cart.INRFactor);
+    const cartItems = useSelector((store: RootState) => store.cart.items);
+    const cartPrice = useSelector((store: RootState) => store.cart.totalPrice);
 
     const [discount, setDiscount] = useState<number>(0);
 
@@ -29,7 +32,7 @@ const Cart = () => {
     cartItems.forEach((item: CartItemType) => {
         totalCartQuantity += item.quantity;
     });
-    
+
     useEffect(() => {
         if (totalCartQuantity >= 5) {
             const factor = Math.floor(totalCartQuantity / 5);
@@ -43,7 +46,7 @@ const Cart = () => {
 
 
 
-    const handleCheckout = async (e:React.ChangeEvent<unknown>) => {
+    const handleCheckout = async (e: React.ChangeEvent<unknown>) => {
         e.preventDefault()
         dispatch(setLoadingState(true));
         dispatch(setBultDiscount(discount));
@@ -115,7 +118,11 @@ const Cart = () => {
                         </div>
                         <div className="flex justify-between text-xl font-bold text-gray-800">
                             <span>Total:</span>
-                            <span>$ {(cartPrice + 5 - cartPrice * discount / 100).toFixed(2)}</span>
+                            <span>$ {((cartPrice + 5 - cartPrice * discount / 100)).toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-xl font-bold text-gray-800">
+                            <span>In INR:</span>
+                            <span>₹ {((cartPrice + 5 - cartPrice * discount / 100)*INRFactor).toFixed(2)}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4">

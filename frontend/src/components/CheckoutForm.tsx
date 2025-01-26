@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useState } from "react";
 import {
     PaymentElement,
@@ -24,14 +26,15 @@ export default function CheckoutForm() {
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1);
-
+    
     const cartItems = useSelector((store: RootState) => store.cart.items);
     const discount = useSelector((store: RootState) => store.cart.bulkDiscount);
+    const INRFactor = useSelector((store: RootState) => store.cart.INRFactor);
     // console.log(object);
 
     const cartPrice = useSelector((store: RootState) => store.cart.totalPrice);
 
-    const handleAddressComplete = (event:CustomStripeInterface) => {
+    const handleAddressComplete = (event: CustomStripeInterface) => {
         if (event.complete) {
             setAddress(event.value!.address);
         }
@@ -45,15 +48,15 @@ export default function CheckoutForm() {
         setStep(1);
     };
 
-    const handleSubmit = async (e:React.ChangeEvent<StripeAddressElement>) => {
+    const handleSubmit = async (e: React.ChangeEvent<StripeAddressElement>) => {
         e.preventDefault();
         if (!stripe || !elements) return;
 
-        const order:orderDataType = {
-            items:cartItems,
-            total_amount: (cartPrice + 5 - cartPrice * discount / 100),
-            status:'pending',
-            shipping_address:address
+        const order: orderDataType = {
+            items: cartItems,
+            total_amount: (cartPrice + 5 - cartPrice * discount / 100) * INRFactor,
+            status: 'pending',
+            shipping_address: address
         }
         localStorage.setItem('order', JSON.stringify(order))
 
@@ -87,28 +90,32 @@ export default function CheckoutForm() {
                 <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
                 <div className="flex justify-between items-center mb-2">
                     <span>Subtotal:</span>
-                    <span>${cartPrice.toFixed(2)}</span>
+                    <span>$ {cartPrice.toFixed(2)}</span>
                 </div>
                 {discount > 0 && (
                     <div>
 
                         <div className="flex justify-between mb-2">
-                            <span>Bulk Discount:</span>
+                            <span>Promotion Applied:</span>
                             <span>{discount.toFixed(2)}%</span>
                         </div>
                         <div className="flex justify-between mb-2">
                             <span>Discounted Price:</span>
-                            <span>${(cartPrice * discount / 100).toFixed(2)}</span>
+                            <span>$ {(cartPrice - cartPrice * discount / 100).toFixed(2)}</span>
                         </div>
                     </div>
                 )}
                 <div className="flex justify-between items-center mb-2">
                     <span>Shipping:</span>
-                    <span>$5.00</span>
+                    <span>$ 5.00</span>
                 </div>
                 <div className="flex justify-between items-center font-bold">
                     <span>Total:</span>
-                    <span>${(cartPrice + 5 - (cartPrice * discount / 100)).toFixed(2)}</span>
+                    <span>$ {(cartPrice + 5 - (cartPrice * discount / 100)).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center font-bold">
+                    <span>In INR:</span>
+                    <span>₹ {((cartPrice + 5 - (cartPrice * discount / 100)) * INRFactor).toFixed(2)}</span>
                 </div>
                 {address && (
                     <div className="mt-6">

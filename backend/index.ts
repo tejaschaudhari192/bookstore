@@ -29,18 +29,22 @@ app.get("/config", (_: Request, res: Response): void => {
 
 app.post("/create-payment-intent", async (req, res) => {
     const cartPrice = req.body.cartPrice;
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: cartPrice*100,
-      currency: "usd",
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
-  
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
+    try {
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: Math.round(cartPrice * 1000),
+            currency: "INR",
+            automatic_payment_methods: {
+                enabled: true,
+            },
+        });
+        
+        res.send({
+          clientSecret: paymentIntent.client_secret,
+          intent:paymentIntent
+        });
+    } catch (error) {
+        res.json(error)
+    }
   });
 
 
