@@ -38,16 +38,22 @@ app.get("/config", (_, res) => {
 });
 app.post("/create-payment-intent", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const cartPrice = req.body.cartPrice;
-    const paymentIntent = yield stripe.paymentIntents.create({
-        amount: cartPrice * 100,
-        currency: "usd",
-        automatic_payment_methods: {
-            enabled: true,
-        },
-    });
-    res.send({
-        clientSecret: paymentIntent.client_secret,
-    });
+    try {
+        const paymentIntent = yield stripe.paymentIntents.create({
+            amount: Math.round(cartPrice * 1000),
+            currency: "INR",
+            automatic_payment_methods: {
+                enabled: true,
+            },
+        });
+        res.send({
+            clientSecret: paymentIntent.client_secret,
+            intent: paymentIntent
+        });
+    }
+    catch (error) {
+        res.json(error);
+    }
 }));
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'Hello World' });
