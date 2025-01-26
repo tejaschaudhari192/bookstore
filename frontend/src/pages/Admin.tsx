@@ -1,36 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getBooks } from "../services/api";
-import { IoMdAddCircleOutline } from "react-icons/io";
+import {  } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { BookCard } from "../components/BookCard";
 import { useDispatch, useSelector } from "react-redux";
-import { Book } from "../model";
-import { Dispatch } from "@reduxjs/toolkit";
 import { setBooks } from "../utils/store/adminSlice";
 import { RootState } from "../utils/store/appStore";
-import Cookies from 'js-cookie';
+import { Loader } from "./Loader";
+import { Book } from "../model";
+import { StateLoader } from "../components/StateLoader";
 
 export const Admin = () => {
-    // const [books, setBooks] = useState([]);
     const books = useSelector((state: RootState) => state.admin.books);
+    const loadingState = useSelector((state:RootState)=> state.load.loadingState);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const userId = JSON.parse(Cookies.get('user')).id;
     // console.log(userId);
 
     useEffect(() => {
         const getBooksCall = async () => {
             const books = await getBooks();
-            const data = await books.data;
+            const data = await books;
             dispatch(setBooks(data));
             // setBooks(data);
         };
         getBooksCall();
-    }, [])
+    }, [books])
+
+    if (!books) {
+        return <Loader/>
+    }
+
+    if (loadingState) {
+        return <Loader/>
+    }
+
     return (
         <div className="h-fit w-full mt-20 ">
             <div className="flex m-10 mt-20 gap-7 flex-wrap">
-                {books.map((book) => {
+                {books.map((book:Book) => {
                     return (
                         <BookCard key={book.id} book={book} />
                     )

@@ -5,55 +5,42 @@ import { formDataType } from '../model';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoadingState } from '../utils/store/loadSlice';
 import { StateLoader } from '../components/StateLoader';
-import Cookies from 'js-cookie';
+import { RootState } from '../utils/store/appStore';
+import { Loader } from './Loader';
 
 export const EditBook = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loadingState = useSelector(store => store.load.loadingState)
-    const [formData, setFormData] = useState<formDataType | null>(null); // Initialize as null
-    const [imagePreview, setImagePreview] = useState<string | null>(null); // Explicitly type as string or null
-    const [image, setImage] = useState<File | null>(null); // Explicitly type as File or null
-    const [loading, setLoading] = useState(true);
+    const loadingState = useSelector((store:RootState) => store.load.loadingState)
+    const [formData, setFormData] = useState<formDataType | null>(null); 
+    const [imagePreview, setImagePreview] = useState<string | null>(null); 
+    const [image, setImage] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
-
-    const token = Cookies.get('token');
-    // const data = useGetData().find((book) => book.id?.toString() === id);
 
     useEffect(() => {
         async function getBookDetails() {
-            const result = await getBook(id);
-            const data = await result.data;
-            // console.log(data);
-            const bookDetails = data[0]
+            const data = await getBook(parseInt(id!));
+            const bookDetails = data[0];
 
             setFormData(bookDetails);
             setImagePreview(bookDetails.imgurl || null);
-            setLoading(false)
+            dispatch(setLoadingState(false))
         }
         getBookDetails()
     }, [])
 
-    // useEffect(() => {
-    //     if (data) { // Check if data is available before setting state
-    //         setFormData(data);
-    //     } else {
-    //         setLoading(false); // Set loading to false if no data is found
-    //         setError("Book not found");
-    //     }
-    // }, [data]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value } as formDataType); // Type assertion
+        setFormData({ ...formData, [e.target.name]: e.target.value } as formDataType); 
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]; // Use optional chaining
+        const file = e.target.files?.[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
             setImage(file);
             setImagePreview(URL.createObjectURL(file));
-        } else if (file) { // Only show alert if a file was selected but has wrong type
+        } else if (file) {
             alert('Only jpg/png files are allowed');
         } else {
             setImage(null);
@@ -64,11 +51,11 @@ export const EditBook = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(setLoadingState(true))
-        setLoading(true); // Set loading to true during submission
+        dispatch(setLoadingState(true)); 
         setError(null);
 
         try {
-            let cdnImage = formData?.imgurl; // Initialize with existing image URL
+            let cdnImage = formData?.imgurl; 
 
             if (image) {
                 const data = new FormData();
@@ -83,7 +70,7 @@ export const EditBook = () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData?.error?.message || "Image upload failed"); // Throw error with message
+                    throw new Error(errorData?.error?.message || "Image upload failed");
                 }
 
                 const uploadResponse = await response.json();
@@ -95,25 +82,25 @@ export const EditBook = () => {
            await updateBook(updatedFormData);
 
             navigate('/admin');
-        } catch (err: any) { // Type the error
+        } catch (err: any) {
             setError(err.message);
             alert(err.message);
             console.error(err)
         } finally {
-            setLoading(false); // Set loading to false regardless of success/failure
+            dispatch(setLoadingState(false)); 
         }
         return dispatch(setLoadingState(false));
     };
 
-    if (loading) {
-        return <div className='mt-20'>Loading book data...</div>;
+    if (loadingState) {
+        return <Loader/>;
     }
 
     if (error) {
         return <div className='mt-20'>Error: {error}</div>;
     }
 
-    if (!formData) { // Check if formData is still null after potential error
+    if (!formData) {
         return <div className='mt-20'>Book data not available.</div>
     }
 

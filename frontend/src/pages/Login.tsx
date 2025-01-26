@@ -1,47 +1,37 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/api";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, setAuthentication } from "../utils/store/userSlice";
 import { RootState } from "../utils/store/appStore";
-import { UserType } from "../model";
+import Cookies from "js-cookie";
 
-export const Login = ({ setToken, setUser }:{setToken:SetStateAction<string>,setUser:SetStateAction<UserType>}) => {
+export const Login = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     const isAuthenticated = useSelector((store: RootState) => store.user.isAuthenticated)
     const dispatch = useDispatch();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const res = await login(formData);
-            // console.log(res.data);
             const user = await res.data.user;
-            setUser(user);
             dispatch(addUser(user));
 
             const token = await res.data.token;
-            setToken(token)
-
-            // dispatch(setUserID(await res.data._id))
-            // console.log(id);
-
-            // console.log(await res.data.token);
-
-            // setIsAuthenticated(true)
+            Cookies.set('token', token)
             dispatch(setAuthentication(true))
 
             alert("Login Successful");
-            // console.log('bhoju');
 
             return await navigate('/')
 
-        } catch (error) {
-            if (error.status == 404) {
-                return alert("User not exist")
+        } catch (error:unknown) {
+            if ((error as { status: number }).status == 400) {
+                return alert(error.message)
             }
-            else if (error.status == 401) {
+            else if ((error as { status: number }).status == 401) {
                 return alert("Wrong Password")
             }
             return alert(error)

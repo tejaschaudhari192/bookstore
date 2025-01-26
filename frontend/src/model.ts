@@ -39,4 +39,17 @@ export interface formDataType {
 }
 
 export interface orderDataType {
+    id?:number
+    items:CartItemType[]
+    total_amount:number,
+    shipping_address:any,
+    status?:string,
+    payment_intent_id?:string,
+    order_date?:string | number
+}
+
+
+
+export interface profileDataType {
+
 }

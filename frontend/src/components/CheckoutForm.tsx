@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     PaymentElement,
     useStripe,
@@ -7,22 +7,33 @@ import {
 } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
 import { RootState } from "../utils/store/appStore";
+import { orderDataType } from "../model";
+import { StripeAddressElement, StripeAddressElementChangeEvent } from "@stripe/stripe-js";
+
+interface CustomStripeInterface extends React.ChangeEvent<StripeAddressElementChangeEvent> {
+    complete?: boolean;
+    value?: {
+        address: string;
+    };
+}
 
 export default function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
-    const [address, setAddress] = useState();
-    const [message, setMessage] = useState(null);
+    const [address, setAddress] = useState<any>('');
+    const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1);
+
+    const cartItems = useSelector((store: RootState) => store.cart.items);
     const discount = useSelector((store: RootState) => store.cart.bulkDiscount);
     // console.log(object);
 
     const cartPrice = useSelector((store: RootState) => store.cart.totalPrice);
 
-    const handleAddressComplete = (event) => {
+    const handleAddressComplete = (event:CustomStripeInterface) => {
         if (event.complete) {
-            setAddress(event.value.address);
+            setAddress(event.value!.address);
         }
     };
 
@@ -34,9 +45,17 @@ export default function CheckoutForm() {
         setStep(1);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:React.ChangeEvent<StripeAddressElement>) => {
         e.preventDefault();
         if (!stripe || !elements) return;
+
+        const order:orderDataType = {
+            items:cartItems,
+            total_amount: (cartPrice + 5 - cartPrice * discount / 100),
+            status:'pending',
+            shipping_address:address
+        }
+        localStorage.setItem('order', JSON.stringify(order))
 
         setIsLoading(true);
 
@@ -49,9 +68,9 @@ export default function CheckoutForm() {
 
         if (error) {
             setMessage(
-                error.type === "card_error" || error.type === "validation_error"
+                (error.type === "card_error" || error.type === "validation_error"
                     ? error.message
-                    : "An unexpected error occurred."
+                    : "An unexpected error occurred.") ?? ""
             );
         }
 

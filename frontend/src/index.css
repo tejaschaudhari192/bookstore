@@ -24,6 +24,6 @@
     @apply flex w-fit border rounded-md overflow-hidden
   }
   .popover-btn {
-    @apply p-2 px-4 w-fit shadow-md hover:bg-slate-300 bg-slate-100
+    @apply p-2 px-4 w-fit hover:bg-slate-300 flex gap-2 items-center cursor-pointer transition-all duration-150
   }
 }

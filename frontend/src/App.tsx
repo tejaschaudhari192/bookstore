@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './utils/store/appStore';
 import { addUser, setAuthentication } from './utils/store/userSlice';
 import { UserType } from './model';
+import { Orders } from './pages/Orders';
 
 
 const Profile = lazy(() => import('./pages/Profile'));
@@ -27,7 +28,9 @@ const Cart = lazy(() => import('./pages/Cart'));
 
 function App() {
     // const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [token, setToken] = useState(Cookies.get('token'));
+    // const [token, setToken] = useState<string | null>(Cookies.get('token')!);
+    const token = useSelector((store: RootState) => store.user.token)
+
     const userType = useSelector((store: RootState) => store.user.type)
     const isAuthenticated = useSelector((store: RootState) => store.user.isAuthenticated)
 
@@ -38,26 +41,6 @@ function App() {
         dispatch(addUser(JSON.parse(user)));
     }
 
-    // const navigate = useNavigate();
-
-    const saveToken = (userToken: string) => {
-        Cookies.set('token', userToken)
-        dispatch(setAuthentication(true))
-        // setIsAuthenticated(true);
-        setToken(userToken);
-    };
-
-    const saveUser = (user: UserType) => {
-        const stringeduser = JSON.stringify(user)
-        Cookies.set('user', stringeduser)
-    }
-
-    const logout = () => {
-        Cookies.remove('token')
-        dispatch(setAuthentication(true))
-        // setIsAuthenticated(false);
-        setToken(null);
-    }
 
     useEffect(() => {
         async function checkAuth() {
@@ -65,12 +48,9 @@ function App() {
                 const success = await verifyToken(token);
                 if (await success) {
                     dispatch(setAuthentication(true))
-                    // setIsAuthenticated(true);
-                    // setUser(jwtDecode(token));
-                    // navigate('/')
                 } else {
-                    logout();
-                    // navigate('/login');
+                    Cookies.remove('token')
+                    dispatch(setAuthentication(true))
                 }
             }
         }
@@ -84,10 +64,10 @@ function App() {
                 <Header />
                 <Routes>
 
-                    <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Login setToken={saveToken} setUser={saveUser} />} />
+                    <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Login />} />
                     <Route path={'/'} element={<Homepage />} />
 
-                    {!isAuthenticated && <Route path='/login' element={<Login setToken={saveToken} setUser={saveUser} />} />}
+                    {!isAuthenticated && <Route path='/login' element={<Login />} />}
 
                     {!isAuthenticated &&
                         <Route path='/register' element={<Register />} />
@@ -105,6 +85,7 @@ function App() {
                     {userType == 'user' &&
                         <>
                             <Route path='/payment/*' element={<Payment />} />
+                            <Route path='/orders' element={<Orders />} />
                             <Route path='/book/:id' element={<BookDetails />} />
 
                             < Route path='/cart' element={<Suspense fallback={<Loader />}>

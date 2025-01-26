@@ -6,6 +6,7 @@ import LandingSection from "../components/LandingSection";
 import { getUserName } from "../utils/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "../utils/store/appStore";
+import BookShimmer from "./BookShimmer";
 export const Homepage = () => {
     const [items, setItems] = useState<Book[]>([]);
     // const [user, setUser] = useState(null);
@@ -13,33 +14,18 @@ export const Homepage = () => {
 
     const userType = useSelector((store: RootState) => store.user.type)
 
-    // console.log(userType);
-
     const username = getUserName();
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             console.log('fetching');
-
-    //             const res = await API.get('/auth/profile');
-    //             console.log(res);
-
-    //             // setUser(res.data.user);
-    //         } catch (err) {
-    //             setUser(null);
-    //         }
-    //     };
-    //     fetchUser();
-    // }, []);
     useEffect(() => {
         const getHompageData = async () => {
-            const result = await getData();
-            const books = await result.data;
+            const data = await getData();
+            const books = await data;
             setItems(books)
         }
         getHompageData();
     }, [])
+
+    if (!items) return <BookShimmer />
 
     if (userType == 'admin')
         return (

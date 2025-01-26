@@ -31,7 +31,7 @@ export const verifyToken = (
     }
 
     if (typeof decoded === "object" && decoded) {
-      (req as AuthenticatedRequest).userId = decoded.id as string; // Adjust key as per your token payload
+      (req as AuthenticatedRequest).userId = decoded.id as string;
     }
 
     next();

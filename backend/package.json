@@ -4,6 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node index.ts --host",
     "dev": "nodemon index.ts"
   },
   "author": "tejas",
@@ -23,6 +24,7 @@
     "stripe": "^17.5.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.7",

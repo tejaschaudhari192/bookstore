@@ -1,23 +1,29 @@
 import { MdDeleteOutline } from "react-icons/md";
-import { useGetData } from "../utils/useGetData";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeItem, setCartPrice, updateCartItem } from "../utils/store/cartSlice";
-import { CartItemType } from "../model";
+import { Book, CartItemType } from "../model";
 import { Loader } from "../pages/Loader";
+import { useEffect, useState } from "react";
+import { getBookDetails } from "../utils/utils";
 
 export const CartItem = ({ cartItem }: {
     cartItem: CartItemType;
 }) => {
-    const book = useGetData().find((book) => book.id == cartItem.bookId);
+    const [book, setBook] = useState<Book>()
+
+    useEffect(() => {
+        getBookDetails(cartItem.bookId).then((data) => {
+            setBook(data)
+        });
+    }, []);
     const dispatch = useDispatch();
 
     if (!book) {
         return <div className="text-gray-500 font-italic"><Loader /></div>;
     }
-    
+
     const discountedPrice = book.price - book.price * book.discount;
-    // console.log(discountedPrice);
-    
+
     const handleDeleteCartItem = (id: number) => {
         dispatch(removeItem(id));
         console.log("Item Deleted");
@@ -40,18 +46,20 @@ export const CartItem = ({ cartItem }: {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center gap-4 border rounded-lg p-4 shadow-sm">
-            <div className="min-w-32 max-w-36">
-                <img
-                    src={book.imgurl? book.imgurl : "https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg"}
-                    alt={book.title}
-                    className=" rounded-lg"
-                />
-            </div>
-
-            <div className="w-full md:w-1/2 flex flex-col">
-                <div className="text-lg font-semibold">{book.title}</div>
-                <div className="text-sm text-gray-500">By: <span className="text-red-700">{book.author}</span> (Author)</div>
+        <div
+            className="flex flex-col select-none justify-center items-center gap-4 border rounded-lg p-4 shadow-sm">
+            <div className="cursor-pointer w-full mx-auto">
+                <div className="min-w-32 mx-auto max-w-36">
+                    <img
+                        src={book.imgurl ? book.imgurl : "https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg"}
+                        alt={book.title}
+                        className=" rounded-lg"
+                    />
+                </div>
+                <div className="mx-auto w-1/2 flex flex-col">
+                    <div className="text-lg font-semibold">{book.title}</div>
+                    <div className="text-sm text-gray-500">By: <span className="text-red-700">{book.author}</span> (Author)</div>
+                </div>
             </div>
 
             <div className="flex items-center justify-end md:justify-center flex-shrink-0">

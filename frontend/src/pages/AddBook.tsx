@@ -13,18 +13,18 @@ export const AddBook = () => {
     const dispatch = useDispatch();
     const loadingState = useSelector((store: RootState) => store.load.loadingState)
     const [imagePreview, setImagePreview] = useState<string>();
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState();
     const [formData, setFormData] = useState({
-        title: "",
-        author: "",
-        price: "",
-        pages: "",
-        language: "",
+        title: "tejas",
+        author: "bhoju",
+        price: 45,
+        pages: 145,
+        language: "eng",
         publisher_id: userId || "",
         publisher: username || "",
-        category: "",
-        discount: "",
-        imgurl: null
+        category: "cat",
+        discount: 50,
+        imgurl: ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ export const AddBook = () => {
     const handleFileChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const file = e.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
-            setFormData((prevFormData) => ({ ...prevFormData, imgurl: file }));
+            // setFormData((prevFormData) => ({ ...prevFormData, imgurl: file }));
             setImagePreview(URL.createObjectURL(file));
             setImage(file);
         } else {
@@ -42,34 +42,34 @@ export const AddBook = () => {
         }
     };
 
-
-
-
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         dispatch(setLoadingState(true))
         console.log(formData);
         try {
-            const file = image
             const data = new FormData()
-            data.append('file', file)
+            data.append('file', image)
             data.append("upload_preset", "unsigned")
             data.append("cloud_name", "drfcuw0bf")
             const response = await fetch("https://api.cloudinary.com/v1_1/drfcuw0bf/image/upload", {
                 method: "POST",
                 body: data
             })
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData?.error?.message || "Image upload failed"); 
+            }
             const uploadResponse = await response.json();
+
             const cdnImage = await uploadResponse.url;
-            // console.log(cdnImage);
+            console.log(cdnImage);
 
-            setFormData({ ...formData, imgurl: await cdnImage });
-            // console.log(formData.imgurl);
+            setFormData({ ...formData, imgurl: cdnImage });
+            console.log(formData.imgurl);
 
-
-            const result = await addBook(formData);
-            const addedBook = await result.addedBook;
+            const result = await addBook({...formData,imgurl:cdnImage});
+            await result;
             await navigate('/admin');
         } catch (error) {
             alert(error)
@@ -125,7 +125,7 @@ export const AddBook = () => {
                             value={formData.title}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition duration-200"
-                            required
+                            
                         />
                     </div>
 
@@ -138,7 +138,7 @@ export const AddBook = () => {
                             value={formData.author}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition duration-200"
-                            required
+                            
                         />
                     </div>
 
@@ -151,7 +151,7 @@ export const AddBook = () => {
                             value={formData.price}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition duration-200"
-                            required
+                            
                         />
                     </div>
 
@@ -164,7 +164,7 @@ export const AddBook = () => {
                             value={formData.pages}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition duration-200"
-                            required
+                            
                         />
                     </div>
 
@@ -177,7 +177,7 @@ export const AddBook = () => {
                             value={formData.language}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition duration-200"
-                            required
+                            
                         />
                     </div>
 
@@ -190,7 +190,7 @@ export const AddBook = () => {
                             value={formData.category}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none transition duration-200"
-                            required
+                            
                         />
                     </div>
 

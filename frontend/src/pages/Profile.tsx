@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
-import { getOrders, getUserData, updateUserData } from "../services/api"; 
+import { getUserData, updateUserData } from "../services/api"; 
 import { Loader } from "./Loader";
 import { FiEdit, FiSave } from "react-icons/fi"; 
 
 const Profile = () => {
-    const [profileData, setProfileData] = useState();
+    const [profileData, setProfileData] = useState<any>();
     const [isEditingName, setIsEditingName] = useState(false); 
     const [updatedName, setUpdatedName] = useState(""); 
 
     useEffect(() => {
-        // async function getOrderRows(){
-        //     try {
-        //         const result = await getOrders({});
-        //         setProfileData(result);
-        //         setUpdatedName(result.name); 
-        //     } catch (error) {
-        //         alert(error);
-        //     }
-        // }
+        
         async function getProfileData() {
             try {
                 const result = await getUserData();
@@ -33,11 +25,11 @@ const Profile = () => {
     const handleSaveName = async () => {
 
         try {
-            await updateUserData(updatedName); // Save updated name
-            setProfileData((prev) => ({ ...prev, name: updatedName })); // Update local data
-            setIsEditingName(false); // Exit editing mode
+            await updateUserData(updatedName); 
+            setProfileData((prev:any) => ({ ...prev, name: updatedName })); 
+            setIsEditingName(false); 
         } catch (error) {
-            alert("Failed to update name: " + error.message);
+            alert("Failed to update name: " + error);
         }
     };
 
@@ -66,7 +58,7 @@ const Profile = () => {
                     <input
                         type="text"
                         value={updatedName}
-                        disabled={!isEditingName} // Disable input if not editing
+                        disabled={!isEditingName}
                         onChange={(e) => setUpdatedName(e.target.value)}
                         className={`border rounded-md px-3 py-2 w-full focus:outline-none focus:ring focus:ring-blue-300 ${isEditingName ? "" : "bg-gray-100"
                             }`}

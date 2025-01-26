@@ -16,7 +16,7 @@ export async function getBook(req: Request, res: Response): Promise<any> {
 
     try {
         const bookId = req.params.id;
-        console.log(bookId);
+        console.log('sending',bookId);
         const Book = await connectionPool.query("SELECT * FROM books WHERE id=$1", [bookId]);
         return res.status(201).json(Book.rows);
     } catch (error) {
@@ -25,16 +25,13 @@ export async function getBook(req: Request, res: Response): Promise<any> {
 }
 
 export async function addBook(req: Request, res: Response): Promise<any> {
-    console.log('adding...');
+    console.log('adding book');
     try {
         const userId = req.query.id;
         const { title, author, price, pages, language, category, discount, publisher,imgurl } = req.body;
         const imagePath = req.file ? req.file.path : null;
-        console.log(imagePath);
 
         const formattedDiscound = parseInt(discount) * 0.01
-        // console.log(formattedDiscound);
-
 
         const newBook = await connectionPool.query("INSERT INTO books (title, author, price, pages, language, publisher_id, imgurl, category, discount,publisher) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10) RETURNING *", [title, author, price, pages, language, userId, imgurl, category, formattedDiscound, publisher]);
         return res.status(201).json(newBook.rows[0]);
@@ -45,11 +42,10 @@ export async function addBook(req: Request, res: Response): Promise<any> {
 }
 
 export async function deleteBook(req: Request, res: Response): Promise<any> {
-    console.log('deleting...');
-
+    
     try {
         const bookId = req.query.id;
-        // console.log(bookId);
+        console.log('deleting',bookId);
 
         const deletedBook = await connectionPool.query("DELETE FROM books WHERE id=$1 RETURNING *", [bookId]);
 
@@ -60,11 +56,10 @@ export async function deleteBook(req: Request, res: Response): Promise<any> {
 }
 
 export async function updateBook(req: Request, res: Response): Promise<any> {
-    console.log('updating...');
-
+    
     try {
         const bookId = req.query.id;
-        console.log(req.body.imgurl);
+        console.log('updating',bookId);
 
         const { title, author, price, pages, language, category, discount, imgurl } = req.body;
         const updatedBook = await connectionPool.query("UPDATE books SET title=$1, author=$2, price=$3, pages=$4, language=$5, imgurl=$6, category=$7, discount=$8 WHERE id=$9 RETURNING *", [title, author, price, pages, language, imgurl, category, discount, bookId]);

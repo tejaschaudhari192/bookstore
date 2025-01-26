@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { Ratings } from "../components/Ratings";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem, setCartPrice, updateCartItem } from "../utils/store/cartSlice";
@@ -7,14 +6,15 @@ import { RootState } from "../utils/store/appStore";
 import { getBook } from "../services/api";
 import { setLoadingState } from "../utils/store/loadSlice";
 import { StateLoader } from "../components/StateLoader";
+import { Book } from "../model";
 
 export const BookDetails = () => {
     const [bookQuantity, setBookQuantity] = useState<number>(1);
     const { id } = useParams();
-    const [book, setBook] = useState();
+    const [book, setBook] = useState<Book>();
     const dispatch = useDispatch();
     // console.log(id);
-    const loadingState = useSelector(store => store.load.loadingState)
+    const loadingState = useSelector((store: RootState) => store.load.loadingState)
 
     const cartItems = useSelector((store: RootState) => store.cart.items);
 
@@ -22,9 +22,8 @@ export const BookDetails = () => {
         async function getBookDetails() {
             dispatch(setLoadingState(true))
 
-            const result = await getBook(id);
-            const data = await result.data;
-            // console.log(data);
+            const data = await getBook(parseInt(id!));
+            console.log(data);
             const bookDetails = data[0]
             setBook(bookDetails);
             // console.log(book);
@@ -41,8 +40,8 @@ export const BookDetails = () => {
 
 
     const date = new Date(book.publication_date)
-    book.discount = parseFloat(book.discount);
-    book.price = parseInt(book.price)
+    // book.discount = parseFloat(book.discount);
+    // book.price = parseInt(book.price)
     const discountedPrice = book.price - book.price * book.discount;
     // console.log(book.discount);
 

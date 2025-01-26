@@ -19,22 +19,22 @@ export const getBooks = async () => {
     const id = JSON.parse(Cookies.get('user')!).id;
     try {
         const result = await API.get("/admin", { params: { id } })
-
-        return result
+        return result.data
     } catch (error) {
         return error
     }
 }
 
-export const getBook = async (id:unknown) => {
+export const getBook = async (id:number) => {
     try {
         const result = await API.get(`/admin/${id}`)
-
-        return result
+        return result.data
     } catch (error) {
         return error
     }
 }
+
+
 
 export const addBook = async (formData: formDataType) => {
     const id = JSON.parse(Cookies.get('user')!).id;
@@ -42,7 +42,7 @@ export const addBook = async (formData: formDataType) => {
         const result = await API.post("/admin", formData, {
             params: { id }
         })
-        return result
+        return result.addedBook;
     } catch (error) {
         return error
     }
@@ -85,10 +85,24 @@ export const getUserData = async () => {
     }
 }
 
-export const getOrders =  async (orderData:orderDataType) => {
+export const addOrder =  async (orderData:orderDataType) => {
     try {
         const id = await JSON.parse(Cookies.get("user")!).id;
-        const result = await API.post("/user/profile",orderData, {
+        const result = await API.post("/user/order",orderData, {
+            params: { id }
+        })
+        return result.data;
+    } catch (error) {
+        console.log(error);
+        
+        return error
+    }
+}
+
+export const getOrders =  async () => {
+    try {
+        const id = await JSON.parse(Cookies.get("user")!).id;
+        const result = await API.get("/user/order", {
             params: { id }
         })
         return result.data;
@@ -116,7 +130,7 @@ export const updateUserData = async (name:string) => {
 export const getData = async () => {
     try {
         const result = await API.get("/user")
-        return result;
+        return result.data;
     } catch (error) {
         return error
     }

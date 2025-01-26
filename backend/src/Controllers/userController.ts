@@ -12,7 +12,6 @@ export async function getData(req: Request, res: Response): Promise<any> {
 
 export async function getUserData(req: Request, res: Response): Promise<any> {
     const id = req.query.id;
-    // console.log(id);
 
     try {
         const data = await connectionPool.query("SELECT * FROM users where id=$1", [id]);
@@ -24,7 +23,6 @@ export async function getUserData(req: Request, res: Response): Promise<any> {
 export async function updateUserData(req: Request, res: Response): Promise<any> {
     const id = req.query.id;
     const name = req.body.name;
-    // console.log(id);
 
     try {
         const data = await connectionPool.query("UPDATE users SET name=$1 WHERE id=$2 RETURNING *", [name, id]);
@@ -37,10 +35,9 @@ export async function updateUserData(req: Request, res: Response): Promise<any> 
 export async function addOrder(req: Request, res: Response): Promise<any> {
     try {
         const userId = req.query.id;
-        console.log(req.body);
-        const { totalPrice, address, payment_intent_id } = req.body;
+        const { total_amount, shipping_address, payment_intent_id,items } = req.body;
 
-        const order = await connectionPool.query("INSERT TNTO orders (user_id, total_amount,payment_intent_id,shipping_address) VALUES ($1, $2, $3, $4) RETURNING *", [userId, totalPrice, payment_intent_id, address]);
+        const order = await connectionPool.query("INSERT INTO orders (user_id, total_amount,payment_intent_id,shipping_address,items) VALUES ($1, $2, $3, $4,$5) RETURNING *", [userId, total_amount, payment_intent_id, shipping_address,JSON.stringify(items)]);
         res.status(200).json(order.rows[0]);
     } catch (error) {
         console.log(error);
@@ -52,7 +49,8 @@ export async function addOrder(req: Request, res: Response): Promise<any> {
 export async function getOrders(req: Request, res: Response): Promise<any> {
     try {
         const userId = req.query.id;
-        const orders = await connectionPool.query("SELECT * FROM orders WHERE user_id =$1", [userId])
+        const orders = await connectionPool.query("SELECT * FROM orders WHERE user_id = $1 ORDER BY id DESC", [userId])
+        
         res.status(200).json(orders.rows)
     } catch (error) {
         console.log(error);
