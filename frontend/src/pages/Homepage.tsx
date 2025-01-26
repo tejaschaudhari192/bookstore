@@ -26,6 +26,8 @@ export const Homepage = () => {
     }, [])
 
     if (!items) return <BookShimmer />
+    console.log(items);
+    
 
     if (userType == 'admin')
         return (

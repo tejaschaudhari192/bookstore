@@ -8,9 +8,11 @@ const dbConfig: PoolConfig = {
     port: 5432,
     database: process.env.REMOTE_DB_NAME,
     password: process.env.REMOTE_DB_PASSWORD,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
     ssl: {
         rejectUnauthorized: false,
-    },
+    }
 }
 
 export const connectionPool = new Pool(dbConfig);
