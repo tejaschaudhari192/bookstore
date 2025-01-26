@@ -2,20 +2,28 @@ import { Pool, PoolConfig } from 'pg'
 import dotenv from 'dotenv';
 dotenv.config();
 
-const dbConfig: PoolConfig = {
+const localDbConfig: PoolConfig = {
     user: process.env.LOCAL_DB_USER,
     host: process.env.LOCAL_DB_HOST,
     port: 5432,
     database: process.env.LOCAL_DB_NAME,
-    password: process.env.LOCAL_DB_PASSWORD,
-    // idleTimeoutMillis: 30000,
-    // connectionTimeoutMillis: 2000,
-    // ssl: {
-    //     rejectUnauthorized: false,
-    // }
+    password: process.env.LOCAL_DB_PASSWORD
 }
 
-export const connectionPool = new Pool(dbConfig);
+const remoteDbConfig: PoolConfig = {
+    user: process.env.REMOTE_DB_USER,
+    host: process.env.REMOTE_DB_HOST,
+    port: 5432,
+    database: process.env.REMOTE_DB_NAME,
+    password: process.env.REMOTE_DB_PASSWORD,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+    ssl: {
+        rejectUnauthorized: false,
+    }
+}
+
+export const connectionPool = new Pool(remoteDbConfig);
 
 export function connectToDB() {
     connectionPool.connect();
