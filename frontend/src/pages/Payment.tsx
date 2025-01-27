@@ -2,19 +2,22 @@ import { Elements } from "@stripe/react-stripe-js"
 import { Route, Routes } from "react-router-dom"
 import CheckoutForm from "../components/CheckoutForm"
 import CompletePage from "./CompletePage"
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState } from "react"
 import axios from "axios"
 import { Appearance, loadStripe } from "@stripe/stripe-js"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../utils/store/appStore"
 import { setLoadingState } from "../utils/store/loadSlice"
 import { StateLoader } from "../components/StateLoader"
-import { Error } from "./Error"
+
+const Error = lazy(() => import('./Error'));
+
 import { LOCAL_API } from "../config/config"
+import { Loader } from "./Loader"
 
 const stripePromise = loadStripe("pk_test_51QlYDVRkNoSxUe6s54cYryB3iY4CieSCvlHahra2tn5tSgla6eGc0ggTMcLSHAw0ov7FhqaDYjxC3meNmaIclO5j00WNciT5Qs");
 
-export const Payment = () => {
+const Payment = () => {
     const [clientSecret, setClientSecret] = useState("");
     // const items = [{ id: "xl-tshirt", amount: 1000 }]
     const cartPrice: number = useSelector((store: RootState) => store.cart.totalPrice)
@@ -55,7 +58,9 @@ export const Payment = () => {
                 <Elements options={{ clientSecret, appearance, loader }} stripe={stripePromise}>
                     <Routes>{
                         cartPrice ?
-                            <Route path="/checkout" element={<CheckoutForm />} /> : <Route element={<Error />} />
+                            <Route path="/checkout" element={<CheckoutForm />} /> : <Route element={<Suspense fallback={<Loader/>}>
+                                <Error />
+                            </Suspense>} />
                     }
                         <Route path="/complete" element={<CompletePage />} />
                     </Routes>
@@ -64,3 +69,5 @@ export const Payment = () => {
         </div>
     )
 }
+
+export default Payment;

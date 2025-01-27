@@ -220,3 +220,5 @@ export const AddBook = () => {
 
     );
 };
+
+export default AddBook;

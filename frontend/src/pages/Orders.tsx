@@ -5,7 +5,7 @@ import { OrdersBook } from "../components/OrdersBook";
 import { useNavigate } from "react-router-dom";
 import { orderDataType } from "../model";
 
-export const Orders = () => {
+const Orders = () => {
     const [orderData, setOrderData] = useState<orderDataType[]>([]);
     const navigate = useNavigate()
 
@@ -92,3 +92,5 @@ export const Orders = () => {
         </div>
     );
 };
+
+export default Orders;
