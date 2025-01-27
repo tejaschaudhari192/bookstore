@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
 import { Header } from './components/Header';
-import { Homepage } from './pages/Homepage';
 import { BookDetails } from './pages/BookDetails';
 // import Cart from './pages/Cart';
 // import { Profile } from './pages/Profile';
