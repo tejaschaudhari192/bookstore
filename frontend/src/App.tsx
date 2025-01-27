@@ -64,6 +64,7 @@ function App() {
                 <Routes>
 
                     <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Login />} />
+                    <Route path={'/login'} element={!isAuthenticated && <Login />} />
                     <Route path={'/'} element={<Homepage />} />
 
                     {!isAuthenticated && <Route path='/login' element={<Login />} />}
