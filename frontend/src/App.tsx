@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './utils/store/appStore';
 import { addUser, setAuthentication } from './utils/store/userSlice';
 import { Orders } from './pages/Orders';
-import { Homepage } from './pages/Homepage';
+// import { Homepage } from './pages/Homepage';
 
 
 const Profile = lazy(() => import('./pages/Profile'));
