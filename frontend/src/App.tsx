@@ -58,12 +58,14 @@ function App() {
                 <Header />
                 <Routes>
 
-                    <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Suspense fallback={<Loader />}>
+                    {/* <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Suspense fallback={<Loader />}>
+                        <Login />
+                    </Suspense>} /> */}
+                    <Route path={'/'} element={<Homepage />} />
+
+                    <Route path={'/'} element={!isAuthenticated && <Suspense fallback={<Loader />}>
                         <Login />
                     </Suspense>} />
-                    <Route path={'/'} element={<Homepage />} />
-                    
-                    {/* <Route path={'/'} element={!isAuthenticated && <Login />} /> */}
 
                     {!isAuthenticated && <Route path='/login' element={<Login />} />}
 
