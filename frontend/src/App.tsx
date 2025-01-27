@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './utils/store/appStore';
 import { addUser, setAuthentication } from './utils/store/userSlice';
 import { Orders } from './pages/Orders';
-// import { Homepage } from './pages/Homepage';
+import { Homepage } from './pages/Homepage';
 
 
 const Profile = lazy(() => import('./pages/Profile'));
@@ -61,9 +61,8 @@ function App() {
                     {/* <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Suspense fallback={<Loader />}>
                         <Login />
                     </Suspense>} /> */}
-                    {/* <Route path={'/'} element={<Homepage />} /> */}
 
-                    <Route path={'/'} element={!isAuthenticated && <Suspense fallback={<Loader />}>
+                    <Route path={'/'} element={isAuthenticated ? <Homepage /> : <Suspense fallback={<Loader />}>
                         <Login />
                     </Suspense>} />
 

@@ -122,11 +122,11 @@ export const BookDetails = () => {
 
                 <div className="flex items-end text-red-800 gap-3 m-5 ml-10">
                     <div className="text-3xl font-bold">${discountedPrice * bookQuantity}</div>
-                    <div className="text-xl line-through">${book.price * bookQuantity}</div>
+                    {book.price != discountedPrice && <div className="text-xl line-through">${book.price * bookQuantity}</div>}
                 </div>
 
                 <div className="flex items-end text-red-800 gap-3 m-5 ml-10">
-                    <div className="text-2xl font-bold">₹ {(discountedPrice * bookQuantity) * INRFactor}</div>
+                    <div className="text-2xl font-bold">₹ {((discountedPrice * bookQuantity) * INRFactor).toFixed(2)}</div>
                 </div>
 
                 <div className="ml-10">

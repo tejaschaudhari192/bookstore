@@ -24,7 +24,7 @@ export const Payment = () => {
 
     const totalCheckoutPrice = ((cartPrice + 5 - cartPrice * discount / 100) * INRFactor).toFixed(2);
     async function getSecret() {
-        return await axios.post('http://localhost:3030/create-payment-intent', { cartPrice: totalCheckoutPrice }).then(async (res) => {
+        return await axios.post('https://bookstore-row7.onrender.com/create-payment-intent', { cartPrice: totalCheckoutPrice }).then(async (res) => {
             const data = await res.data;
             console.log(data);
             setClientSecret(await data.clientSecret)

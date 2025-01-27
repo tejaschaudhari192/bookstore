@@ -65,7 +65,7 @@ export default function CheckoutForm() {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: "https://localhost:5173/payment/complete",
+                return_url: "https://bookstore-bice-one.vercel.app/payment/complete",
             },
         });
 

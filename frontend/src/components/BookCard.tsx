@@ -12,6 +12,8 @@ export const BookCard = ({ book }: { book: Book }) => {
     const dispatch = useDispatch();
     const userType = useSelector((store: RootState) => store.user.type)
 
+    const discountedPrice = book.price - book.price * (book.discount);
+
     const handleDirect = () => {
         navigate(`/book/${book.id}`);
     }
@@ -52,8 +54,8 @@ export const BookCard = ({ book }: { book: Book }) => {
                         <span className="text-slate-500 text-sm">{book.author}</span>
                     </div>
                     <div className="flex gap-2 mt-3 leading-tight items-center">
-                        <div className="font-bold">${book.price - book.price * (book.discount)}</div>
-                        <div className="text-slate-400 font-bold text-sm line-through decoration-[1.5px]">${Math.round(book.price)}</div>
+                        <div className="font-bold">${discountedPrice}</div>
+                        {book.price != discountedPrice  && <div className="text-slate-400 font-bold text-sm line-through decoration-[1.5px]">${Math.round(book.price)}</div>}
                     </div>
                     {userType === 'admin' && (
                         <div className="flex my-2 justify-between">
