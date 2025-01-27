@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 
-export const Register = () => {
+const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
@@ -143,3 +143,5 @@ export const Register = () => {
         </div>
     );
 };
+
+export default Register;

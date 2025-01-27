@@ -2,15 +2,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Cookies from 'js-cookie'
 import { Header } from './components/Header';
 import { BookDetails } from './pages/BookDetails';
-// import Cart from './pages/Cart';
-// import { Profile } from './pages/Profile';
 import { Loader } from './pages/Loader';
 import { lazy, Suspense, useEffect } from 'react';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
 import { Admin } from './pages/Admin';
 import { AddBook } from './pages/AddBook';
-// import { API } from './services/api';
 import { EditBook } from './pages/EditBook';
 import { Payment } from './pages/Payment';
 import { verifyToken } from './services/api';
@@ -19,14 +14,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './utils/store/appStore';
 import { addUser, setAuthentication } from './utils/store/userSlice';
 import { Orders } from './pages/Orders';
+import { Homepage } from './pages/Homepage';
 
 
 const Profile = lazy(() => import('./pages/Profile'));
 const Cart = lazy(() => import('./pages/Cart'));
+const Register = lazy(() => import('./pages/Register'));
+const Login = lazy(() => import('./pages/Login'));
 
 function App() {
-    // const [isAuthenticated, setIsAuthenticated] = useState(false);
-    // const [token, setToken] = useState<string | null>(Cookies.get('token')!);
     const token = useSelector((store: RootState) => store.user.token)
 
     const userType = useSelector((store: RootState) => store.user.type)
@@ -63,13 +59,15 @@ function App() {
                 <Routes>
 
                     <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Login />} />
-                    {/* <Route path={'/'} element={<Homepage />} /> */}
+                    <Route path={'/'} element={<Homepage />} />
                     <Route path={'/'} element={!isAuthenticated && <Login />} />
 
                     {!isAuthenticated && <Route path='/login' element={<Login />} />}
 
                     {!isAuthenticated &&
-                        <Route path='/register' element={<Register />} />
+                        <Route path='/register' element={<Suspense fallback={<Loader />}>
+                        <Register />
+                    </Suspense>} />
                     }
 
                     {userType == 'admin' &&

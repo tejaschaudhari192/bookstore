@@ -6,7 +6,7 @@ import { addUser, setAuthentication } from "../utils/store/userSlice";
 import { RootState } from "../utils/store/appStore";
 import Cookies from "js-cookie";
 
-export const Login = () => {
+const Login = () => {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     const isAuthenticated = useSelector((store: RootState) => store.user.isAuthenticated)
@@ -94,3 +94,5 @@ export const Login = () => {
         </div>
     );
 };
+
+export default Login;
