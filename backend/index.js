@@ -47,8 +47,7 @@ app.post("/create-payment-intent", (req, res) => __awaiter(void 0, void 0, void 
             },
         });
         res.send({
-            clientSecret: paymentIntent.client_secret,
-            intent: paymentIntent
+            clientSecret: paymentIntent.client_secret
         });
     }
     catch (error) {

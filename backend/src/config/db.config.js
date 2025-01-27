@@ -27,7 +27,7 @@ const remoteDbConfig = {
         rejectUnauthorized: false,
     }
 };
-exports.connectionPool = new pg_1.Pool(remoteDbConfig);
+exports.connectionPool = new pg_1.Pool(localDbConfig);
 function connectToDB() {
     exports.connectionPool.connect();
     exports.connectionPool.on('connect', () => {

@@ -23,7 +23,7 @@ const remoteDbConfig: PoolConfig = {
     }
 }
 
-export const connectionPool = new Pool(remoteDbConfig);
+export const connectionPool = new Pool(localDbConfig);
 
 export function connectToDB() {
     connectionPool.connect();

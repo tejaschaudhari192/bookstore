@@ -10,6 +10,7 @@ import { RootState } from "../utils/store/appStore"
 import { setLoadingState } from "../utils/store/loadSlice"
 import { StateLoader } from "../components/StateLoader"
 import { Error } from "./Error"
+import { LOCAL_API } from "../config/config"
 
 const stripePromise = loadStripe("pk_test_51QlYDVRkNoSxUe6s54cYryB3iY4CieSCvlHahra2tn5tSgla6eGc0ggTMcLSHAw0ov7FhqaDYjxC3meNmaIclO5j00WNciT5Qs");
 
@@ -24,11 +25,10 @@ export const Payment = () => {
 
     const totalCheckoutPrice = ((cartPrice + 5 - cartPrice * discount / 100) * INRFactor).toFixed(2);
     async function getSecret() {
-        return await axios.post('https://bookstore-row7.onrender.com/create-payment-intent', { cartPrice: totalCheckoutPrice }).then(async (res) => {
+        return await axios.post(LOCAL_API+'/create-payment-intent', { cartPrice: totalCheckoutPrice }).then(async (res) => {
             const data = await res.data;
             console.log(data);
             setClientSecret(await data.clientSecret)
-            console.log(await data.paymentIntent);
             dispatch(setLoadingState(false))
         })
     }

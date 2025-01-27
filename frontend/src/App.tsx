@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
 import { Header } from './components/Header';
 import { BookDetails } from './pages/BookDetails';
@@ -58,13 +58,10 @@ function App() {
                 <Header />
                 <Routes>
 
-                    {/* <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Suspense fallback={<Loader />}>
-                        <Login />
-                    </Suspense>} /> */}
-
-                    <Route path={'/'} element={isAuthenticated ? <Homepage /> : <Suspense fallback={<Loader />}>
+                    <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Suspense fallback={<Loader />}>
                         <Login />
                     </Suspense>} />
+                    <Route path={'/'} element={<Homepage />} />
 
                     {!isAuthenticated && <Route path='/login' element={<Login />} />}
 

@@ -1,12 +1,10 @@
 import axios from 'axios'
 import { formDataType, orderDataType } from '../model';
 import Cookies from 'js-cookie';
-
-// const LOCAL_API = 'http://localhost:3030'
-const REMOTE_API = 'https://bookstore-row7.onrender.com'
+import { LOCAL_API } from '../config/config';
 
 export const API = axios.create({
-    baseURL: REMOTE_API, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+    baseURL: LOCAL_API, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
 })
 
 export const register = (userData:{

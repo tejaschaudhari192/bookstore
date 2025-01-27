@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../utils/store/appStore";
 import { orderDataType } from "../model";
 import { StripeAddressElement, StripeAddressElementChangeEvent } from "@stripe/stripe-js";
+import { LOCAL_FRONTND_URL } from "../config/config";
 
 interface CustomStripeInterface extends React.ChangeEvent<StripeAddressElementChangeEvent> {
     complete?: boolean;
@@ -26,7 +27,7 @@ export default function CheckoutForm() {
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1);
-    
+
     const cartItems = useSelector((store: RootState) => store.cart.items);
     const discount = useSelector((store: RootState) => store.cart.bulkDiscount);
     const INRFactor = useSelector((store: RootState) => store.cart.INRFactor);
@@ -65,7 +66,7 @@ export default function CheckoutForm() {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: "https://bookstore-bice-one.vercel.app/payment/complete",
+                return_url: LOCAL_FRONTND_URL + "/payment/complete",
             },
         });
 
