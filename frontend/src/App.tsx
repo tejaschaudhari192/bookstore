@@ -61,7 +61,7 @@ function App() {
                     {/* <Route path={'/login'} element={isAuthenticated ? <Navigate to={'/'} /> : <Suspense fallback={<Loader />}>
                         <Login />
                     </Suspense>} /> */}
-                    <Route path={'/'} element={<Homepage />} />
+                    {/* <Route path={'/'} element={<Homepage />} /> */}
 
                     <Route path={'/'} element={!isAuthenticated && <Suspense fallback={<Loader />}>
                         <Login />
