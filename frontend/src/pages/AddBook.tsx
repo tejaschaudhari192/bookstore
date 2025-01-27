@@ -7,7 +7,7 @@ import { setLoadingState } from '../utils/store/loadSlice';
 import { StateLoader } from '../components/StateLoader';
 import { RootState } from '../utils/store/appStore';
 
-export const AddBook = () => {
+const AddBook = () => {
     const userId = useSelector((store: RootState) => store.user.userId);
     const username = useSelector((store: RootState) => store.user.name);
     const navigate = useNavigate();
@@ -220,3 +220,5 @@ export const AddBook = () => {
 
     );
 };
+
+export default AddBook;

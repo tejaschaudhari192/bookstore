@@ -8,7 +8,7 @@ import { setLoadingState } from "../utils/store/loadSlice";
 import { StateLoader } from "../components/StateLoader";
 import { Book } from "../model";
 
-export const BookDetails = () => {
+const BookDetails = () => {
     const [bookQuantity, setBookQuantity] = useState<number>(1);
     const { id } = useParams();
     const [book, setBook] = useState<Book>();
@@ -179,3 +179,5 @@ export const BookDetails = () => {
         </div>
     )
 }
+
+export default BookDetails;

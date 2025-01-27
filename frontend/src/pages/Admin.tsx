@@ -9,7 +9,7 @@ import { RootState } from "../utils/store/appStore";
 import { Loader } from "./Loader";
 import { Book } from "../model";
 
-export const Admin = () => {
+const Admin = () => {
     const books = useSelector((state: RootState) => state.admin.books);
     const loadingState = useSelector((state:RootState)=> state.load.loadingState);
     const dispatch = useDispatch();
@@ -57,3 +57,5 @@ export const Admin = () => {
         </div>
     )
 }
+
+export default Admin;

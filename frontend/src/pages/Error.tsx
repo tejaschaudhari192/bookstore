@@ -5,7 +5,7 @@ interface ErrorPageProps {
   message?: string;
 }
 
-export const Error: React.FC<ErrorPageProps> = ({ statusCode = 500, message = "An unexpected error occurred." }) => {
+const Error: React.FC<ErrorPageProps> = ({ statusCode = 500, message = "An unexpected error occurred." }) => {
   const statusText = statusCode === 404 ? "Page Not Found" : "Internal Server Error";
 
   return (
@@ -34,3 +34,5 @@ export const Error: React.FC<ErrorPageProps> = ({ statusCode = 500, message = "A
     </div>
   );
 };
+
+export default Error;

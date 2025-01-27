@@ -8,7 +8,7 @@ import { StateLoader } from '../components/StateLoader';
 import { RootState } from '../utils/store/appStore';
 import { Loader } from './Loader';
 
-export const EditBook = () => {
+const EditBook = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -233,3 +233,5 @@ export const EditBook = () => {
         </div>
     );
 };
+
+export default EditBook;

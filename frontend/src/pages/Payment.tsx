@@ -14,7 +14,7 @@ import { REMOTE_API } from "../config/config"
 
 const stripePromise = loadStripe("pk_test_51QlYDVRkNoSxUe6s54cYryB3iY4CieSCvlHahra2tn5tSgla6eGc0ggTMcLSHAw0ov7FhqaDYjxC3meNmaIclO5j00WNciT5Qs");
 
-export const Payment = () => {
+const Payment = () => {
     const [clientSecret, setClientSecret] = useState("");
     // const items = [{ id: "xl-tshirt", amount: 1000 }]
     const cartPrice: number = useSelector((store: RootState) => store.cart.totalPrice)
@@ -65,3 +65,5 @@ export const Payment = () => {
         </div>
     )
 }
+
+export default Payment;
